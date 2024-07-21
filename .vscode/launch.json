@@ -1,0 +1,34 @@
+{
+    // Use IntelliSense to learn about possible attributes.
+    // Hover to view descriptions of existing attributes.
+    // For more information, visit: https://go.microsoft.com/fwlink/?linkid=830387
+    "version": "0.2.0",
+    "configurations": [
+        {
+            "name": "clippy",
+            "request": "launch",
+            "type": "dart"
+        },
+        {
+            "name": "IPhone 15 Plus",
+            "request": "launch",
+            "type": "dart",
+            "deviceId": "295A1825-6AC6-453F-AA9C-6BFD1958945C"
+        },
+        {
+            "name": "MacOS",
+            "request": "launch",
+            "type": "dart",
+            "deviceId": "macos"
+        }
+    ],
+    "compounds": [
+        {
+            "name": "Mac and IPhone",
+            "configurations": [
+                "IPhone 15 Plus",
+                "MacOS",
+            ]
+        }
+    ]
+}
