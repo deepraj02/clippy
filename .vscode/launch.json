@@ -32,7 +32,7 @@
             "name": "Mac and IPhone",
             "configurations": [
                 "IPhone 15 Plus",
-                "MacOS",
+                // "MacOS",
             ]
         }
     ]
