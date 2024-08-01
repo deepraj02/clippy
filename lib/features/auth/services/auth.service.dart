@@ -18,8 +18,19 @@ class AuthService {
         _firestore = firestore,
         _googleSignIn = googleSignIn;
 
+  Future<Either<String, User>> signup(
+      {required String email, required String password}) async {
+    try {
+      final response = await _auth.createUserWithEmailAndPassword(
+          email: email, password: password);
+      return right(response.user!);
+    } on FirebaseAuthException catch (e) {
+      return left(e.message ?? 'Failed to Signup.');
+    }
+  }
+
   @Deprecated("Divide in Chunks")
-  Future<Either<String, void>> signInWithGoogleAndRegisterDatabase() async {
+  Future<Either<String, User?>> signInWithGoogleAndRegisterDatabase() async {
     try {
       final GoogleSignInAccount? googleUser = await GoogleSignIn().signIn();
       final GoogleSignInAuthentication? googleAuth =
@@ -43,7 +54,7 @@ class AuthService {
       log("UserCred:  ${userCredential.user!.uid}\n");
       log("USER : $user\n");
       log(" AUTH CurrentUser : ${_auth.currentUser!}\n");
-      return right(null);
+      return right(user!);
     } catch (e) {
       log(e.toString());
       return left(e.toString());
@@ -54,10 +65,19 @@ class AuthService {
     try {
       await _googleSignIn.disconnect();
       _auth.signOut();
-      log("LOGOUT : ${FirebaseAuth.instance.currentUser}\n");
+      log("LOGOUT : ${_auth.currentUser}\n");
       return right(null);
     } catch (e) {
       log("LOGOUT ERROR : $e\n");
+      return left(e.toString());
+    }
+  }
+
+  Either<String, User?> currentUser() {
+    try {
+      return right(_auth.currentUser);
+    } catch (e, st) {
+      log("CURRENT USER ERROR : $e\n $st\n");
       return left(e.toString());
     }
   }
