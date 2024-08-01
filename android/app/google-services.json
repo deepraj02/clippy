@@ -31,10 +31,10 @@
               "client_type": 3
             },
             {
-              "client_id": "553750875272-qv3sf8sq94ms0k3t4bqmbltv2jlqvtud.apps.googleusercontent.com",
+              "client_id": "553750875272-9qk8keed8fjmhes9qget3n67ijmrg0mb.apps.googleusercontent.com",
               "client_type": 2,
               "ios_info": {
-                "bundle_id": "com.example.clippy"
+                "bundle_id": "com.infamousindie.clippy.clippy"
               }
             }
           ]

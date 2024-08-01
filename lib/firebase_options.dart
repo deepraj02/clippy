@@ -89,4 +89,5 @@ class DefaultFirebaseOptions {
     storageBucket: 'clippy-indie.appspot.com',
     measurementId: 'G-TM46V6V9NW',
   );
+
 }

@@ -1,1 +1,53 @@
-{"flutter":{"platforms":{"android":{"default":{"projectId":"clippy-indie","appId":"1:553750875272:android:435f3847dc4815fd4aa33d","fileOutput":"android/app/google-services.json"}},"ios":{"default":{"projectId":"clippy-indie","appId":"1:553750875272:ios:89743d98c524813b4aa33d","uploadDebugSymbols":false,"fileOutput":"ios/Runner/GoogleService-Info.plist"}},"macos":{"default":{"projectId":"clippy-indie","appId":"1:553750875272:ios:89743d98c524813b4aa33d","uploadDebugSymbols":false,"fileOutput":"macos/Runner/GoogleService-Info.plist"}},"dart":{"lib/firebase_options.dart":{"projectId":"clippy-indie","configurations":{"android":"1:553750875272:android:435f3847dc4815fd4aa33d","ios":"1:553750875272:ios:89743d98c524813b4aa33d","macos":"1:553750875272:ios:89743d98c524813b4aa33d","web":"1:553750875272:web:cc5850327a1e49cf4aa33d","windows":"1:553750875272:web:3782636eda9615904aa33d"}}}}}}
+{
+    "flutter": {
+        "platforms": {
+            "android": {
+                "default": {
+                    "projectId": "clippy-indie",
+                    "appId": "1:553750875272:android:435f3847dc4815fd4aa33d",
+                    "fileOutput": "android/app/google-services.json"
+                }
+            },
+            "ios": {
+                "default": {
+                    "projectId": "clippy-indie",
+                    "appId": "1:553750875272:ios:89743d98c524813b4aa33d",
+                    "uploadDebugSymbols": false,
+                    "fileOutput": "ios/Runner/GoogleService-Info.plist"
+                }
+            },
+            "macos": {
+                "default": {
+                    "projectId": "clippy-indie",
+                    "appId": "1:553750875272:ios:89743d98c524813b4aa33d",
+                    "uploadDebugSymbols": false,
+                    "fileOutput": "macos/Runner/GoogleService-Info.plist"
+                }
+            },
+            "dart": {
+                "lib/firebase_options.dart": {
+                    "projectId": "clippy-indie",
+                    "configurations": {
+                        "android": "1:553750875272:android:435f3847dc4815fd4aa33d",
+                        "ios": "1:553750875272:ios:89743d98c524813b4aa33d",
+                        "macos": "1:553750875272:ios:89743d98c524813b4aa33d",
+                        "web": "1:553750875272:web:cc5850327a1e49cf4aa33d",
+                        "windows": "1:553750875272:web:3782636eda9615904aa33d"
+                    }
+                }
+            }
+        }
+    },
+    "emulators": {
+        "auth": {
+            "port": 9099
+        },
+        "firestore": {
+            "port": 8080
+        },
+        "ui": {
+            "enabled": true
+        },
+        "singleProjectMode": true
+    }
+}
