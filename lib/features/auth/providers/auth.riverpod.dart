@@ -1,12 +1,13 @@
-import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:riverpod_annotation/riverpod_annotation.dart';
 
-import '../../../core/providers/firebase_providers.dart';
-import '../services/auth.service.dart';
+import '../state/auth.state.dart';
 
-final authServiceProvider = Provider<AuthService>((ref) {
-  return AuthService(
-    auth: ref.read(firebaseInstanceProvider),
-    firestore: ref.read(firestoreInstanceProvider),
-    googleSignIn: ref.read(googleSignInProvider),
-  );
-});
+part 'gen/auth.riverpod.g.dart';
+
+@riverpod
+class Auth extends _$Auth {
+  @override
+  AuthState build() {
+    return AuthStateInitial();
+  }
+}

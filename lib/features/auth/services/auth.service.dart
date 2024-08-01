@@ -2,6 +2,7 @@ import 'dart:developer';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:fpdart/fpdart.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 
 class AuthService {
@@ -17,7 +18,8 @@ class AuthService {
         _firestore = firestore,
         _googleSignIn = googleSignIn;
 
-  Future signInWithGoogle() async {
+  @Deprecated("Divide in Chunks")
+  Future<Either<String, void>> signInWithGoogleAndRegisterDatabase() async {
     try {
       final GoogleSignInAccount? googleUser = await GoogleSignIn().signIn();
       final GoogleSignInAuthentication? googleAuth =
@@ -41,14 +43,22 @@ class AuthService {
       log("UserCred:  ${userCredential.user!.uid}\n");
       log("USER : $user\n");
       log(" AUTH CurrentUser : ${_auth.currentUser!}\n");
+      return right(null);
     } catch (e) {
       log(e.toString());
+      return left(e.toString());
     }
   }
 
-  Future logout() async {
-    await _googleSignIn.disconnect();
-    _auth.signOut();
-    log("LOGOUT : ${FirebaseAuth.instance.currentUser}\n");
+  Future<Either<String, void>> logout() async {
+    try {
+      await _googleSignIn.disconnect();
+      _auth.signOut();
+      log("LOGOUT : ${FirebaseAuth.instance.currentUser}\n");
+      return right(null);
+    } catch (e) {
+      log("LOGOUT ERROR : $e\n");
+      return left(e.toString());
+    }
   }
 }
