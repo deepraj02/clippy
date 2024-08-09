@@ -4,7 +4,7 @@ import 'package:riverpod_annotation/riverpod_annotation.dart';
 
 import '../state/auth.state.dart';
 
-part 'auth.riverpod.g.dart';
+part 'gen/auth.riverpod.g.dart';
 
 @riverpod
 class Auth extends _$Auth {
@@ -36,6 +36,16 @@ class Auth extends _$Auth {
       (response) => AuthStateSuccess(user: response!),
     );
   }
+
+  Future<void> logout() async{
+    state = AuthStateLoading();
+    final response = await ref.read(authServiceProvider).logout();
+    state = response.fold(
+      (error) => AuthStateFailure(error),
+      (response) => AuthStateInitial(),
+    );
+  }
+
 
   Future<void> init() async {
     print("2");
