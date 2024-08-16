@@ -1,8 +1,8 @@
-import 'package:clippy/features/auth/pages/auth.page.dart';
 import 'package:flex_color_scheme/flex_color_scheme.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
+import 'core/app_router.dart';
 import 'core/helpers/lifecycle_monitor.dart';
 
 class AppInit extends ConsumerWidget {
@@ -10,15 +10,19 @@ class AppInit extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
+    final router = ref.watch(routerProvider);
     return LifecycleMonitor(
-      child: MaterialApp(
+      child: MaterialApp.router(
         debugShowCheckedModeBanner: false,
         theme: FlexColorScheme.light(scheme: FlexScheme.indigoM3).toTheme,
         darkTheme: FlexColorScheme.dark(scheme: FlexScheme.indigoM3).toTheme,
         themeMode: ThemeMode.system,
-        home: const Scaffold(
-          body: AuthPage(),
-        ),
+        routerDelegate: router.routerDelegate,
+        routeInformationParser: router.routeInformationParser,
+        routeInformationProvider: router.routeInformationProvider,
+        // home: const Scaffold(
+        //   body: AuthPage(),
+        // ),
       ),
     );
   }

@@ -2,6 +2,7 @@ import 'dart:developer' as dev;
 
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:go_router/go_router.dart';
 
 import '../providers/auth.riverpod.dart';
 import '../state/auth.state.dart';
@@ -28,13 +29,6 @@ class _AuthPageState extends ConsumerState<AuthPage> {
       booting = false;
     });
   }
-  // Future<void> _signInWithGoogle() async {
-  //   try {
-  //     await ref.read(authServiceProvider).signInWithGoogleAndRegisterDatabase();
-  //   } catch (e) {
-  //     print(e);
-  //   }
-  // }
 
   @override
   Widget build(BuildContext context) {
@@ -70,21 +64,15 @@ class _AuthPageState extends ConsumerState<AuthPage> {
                       await ref
                           .read(authProvider.notifier)
                           .continueWithGoogle();
+                      final newState = ref.read(authProvider);
+                      if (newState is AuthStateSuccess) {
+                        context.push("/home");
+                      }
                     } on Exception catch (e) {
                       dev.log(e.toString());
                     }
                   },
                   child: const Text("Sign In with Google"),
-                ),
-                ElevatedButton(
-                  onPressed: () async {
-                    try {
-                      await ref.read(authProvider.notifier).logout();
-                    } catch (e) {
-                      dev.log(e.toString());
-                    }
-                  },
-                  child: const Text("Logout"),
                 ),
               ],
             ),
