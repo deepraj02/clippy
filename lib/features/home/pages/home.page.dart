@@ -5,12 +5,15 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 
 import '../../auth/providers/auth.riverpod.dart';
+import '../../auth/state/auth.state.dart';
 
 class HomePage extends ConsumerWidget {
+  static String route() => "/home";
   const HomePage({super.key});
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
+    final newState = ref.read(authProvider);
     return Scaffold(
       appBar: AppBar(
         title: const Text("Home Page"),
@@ -23,7 +26,7 @@ class HomePage extends ConsumerWidget {
               onPressed: () async {
                 try {
                   await ref.read(authProvider.notifier).logout();
-                  context.pop();
+                  if(newState is AuthStateInitial && context.mounted) return context.pop();
                 } catch (e) {
                   log(e.toString());
                 }

@@ -9,14 +9,13 @@ import '../state/auth.state.dart';
 
 class AuthPage extends ConsumerStatefulWidget {
   const AuthPage({super.key});
-
+  static String route() => '/login';
   @override
   ConsumerState<ConsumerStatefulWidget> createState() => _AuthPageState();
 }
 
 class _AuthPageState extends ConsumerState<AuthPage> {
   bool booting = true;
-
   @override
   void initState() {
     super.initState();
@@ -32,6 +31,7 @@ class _AuthPageState extends ConsumerState<AuthPage> {
 
   @override
   Widget build(BuildContext context) {
+    final newState = ref.read(authProvider);
     return Scaffold(
       body: Consumer(
         builder: (context, ref, _) {
@@ -64,8 +64,8 @@ class _AuthPageState extends ConsumerState<AuthPage> {
                       await ref
                           .read(authProvider.notifier)
                           .continueWithGoogle();
-                      final newState = ref.read(authProvider);
-                      if (newState is AuthStateSuccess) {
+
+                      if (newState is AuthStateSuccess && context.mounted) {
                         context.push("/home");
                       }
                     } on Exception catch (e) {

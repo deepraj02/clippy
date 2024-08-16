@@ -1,25 +1,49 @@
+import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 
 import '../features/auth/pages/auth.page.dart';
 import '../features/home/pages/home.page.dart';
+import 'providers/firebase_providers.dart';
 
 part 'app_router.g.dart';
 
 @riverpod
 GoRouter router(RouterRef ref) {
+  final navigatorKey = GlobalKey<NavigatorState>();
+  final authStatus = ref.read(firebaseAuthInstanceProvider);
+  // final listenable = ref.read(routerProvider);
   return GoRouter(
+    navigatorKey: navigatorKey,
     debugLogDiagnostics: true,
-    initialLocation: "/login",
+    initialLocation: AuthPage.route(),
     routes: [
       GoRoute(
-        path: "/login",
+        path: AuthPage.route(),
         builder: (context, state) => const AuthPage(),
       ),
       GoRoute(
-        path: "/home",
+        path: HomePage.route(),
         builder: (context, state) => const HomePage(),
       ),
     ],
+    // redirect: (context, state) {
+    //   final publicRoutes = [AuthPage.route()];
+    //   if (publicRoutes.contains(state.matchedLocation)) {
+    //     return null;
+    //   }
+    //   final authState = ref.read(authProvider);
+    //   if (authState is AuthStateSuccess) {
+    //     return "/home";
+    //   }
+    //   return AuthPage.route();
+    // },
+    redirect: (context, state) {
+      final loggedIn = authStatus.currentUser != null;
+      final loggingIn = state.matchedLocation == AuthPage.route();
+      if (!loggedIn) return loggingIn ? null : AuthPage.route();
+      if (loggedIn) return HomePage.route();
+      return null;
+    },
   );
 }
