@@ -1,7 +1,10 @@
+import 'dart:developer' as dev;
+
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../providers/auth.riverpod.dart';
+import '../state/auth.state.dart';
 
 class AuthPage extends ConsumerStatefulWidget {
   const AuthPage({super.key});
@@ -43,19 +46,43 @@ class _AuthPageState extends ConsumerState<AuthPage> {
               child: CircularProgressIndicator(),
             );
           }
+          final state = ref.watch(authProvider);
+
           return Center(
             child: Column(
               mainAxisSize: MainAxisSize.min,
               children: [
+                Builder(builder: (context) {
+                  switch (state) {
+                    case AuthStateInitial():
+                      return const Text("Initial");
+                    case AuthStateLoading():
+                      return const CircularProgressIndicator();
+                    case AuthStateSuccess():
+                      return Text("User: ${state.user.email}");
+                    default:
+                      return const Text("Initial");
+                  }
+                }),
                 ElevatedButton(
                   onPressed: () async {
-                    await ref.read(authProvider.notifier).continueWithGoogle();
+                    try {
+                      await ref
+                          .read(authProvider.notifier)
+                          .continueWithGoogle();
+                    } on Exception catch (e) {
+                      dev.log(e.toString());
+                    }
                   },
                   child: const Text("Sign In with Google"),
                 ),
                 ElevatedButton(
                   onPressed: () async {
-                    await ref.read(authProvider.notifier).logout();
+                    try {
+                      await ref.read(authProvider.notifier).logout();
+                    } catch (e) {
+                      dev.log(e.toString());
+                    }
                   },
                   child: const Text("Logout"),
                 ),

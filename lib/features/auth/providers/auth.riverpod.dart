@@ -1,5 +1,6 @@
 import 'package:clippy/features/auth/providers/auth.service.riverpod.dart';
 import 'package:clippy/features/user/providers/user.service.riverpod.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 
 import '../state/auth.state.dart';
@@ -37,15 +38,18 @@ class Auth extends _$Auth {
     );
   }
 
-  Future<void> logout() async{
+  Future<void> logout() async {
     state = AuthStateLoading();
     final response = await ref.read(authServiceProvider).logout();
     state = response.fold(
-      (error) => AuthStateFailure(error),
-      (response) => AuthStateInitial(),
+      (error) => state = AuthStateFailure(error),
+      (response) => state = AuthStateInitial(),
     );
   }
 
+  void setUser(User user) {
+    state = AuthStateSuccess(user: user);
+  }
 
   Future<void> init() async {
     print("2");

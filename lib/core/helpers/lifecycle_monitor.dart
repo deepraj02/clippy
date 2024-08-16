@@ -2,10 +2,6 @@ import 'dart:developer';
 
 import 'package:flutter/material.dart';
 
-/// Widget to monitor the lifecycle of the app and show a dialog when the app
-/// is resumed.
-///
-/// This widget is used in the [Snooze] widget.
 class LifecycleMonitor extends StatefulWidget {
   final Widget child;
   const LifecycleMonitor({super.key, required this.child});
