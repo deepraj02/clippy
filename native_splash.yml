@@ -1,0 +1,7 @@
+flutter_native_splash:
+  android: true
+  ios: true
+  web: false
+  background_image: assets/bg_2.png
+  # image: assets/icon/clippy.png
+  image: assets/bg_text.png
