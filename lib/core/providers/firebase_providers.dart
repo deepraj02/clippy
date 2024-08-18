@@ -14,3 +14,8 @@ final firestoreInstanceProvider = Provider<FirebaseFirestore>((ref) {
 final googleSignInProvider = Provider<GoogleSignIn>((ref) {
   return GoogleSignIn();
 });
+
+final authStateProvider = StreamProvider<User?>((ref) {
+  final authState = ref.watch(firebaseAuthInstanceProvider).authStateChanges();
+  return authState;
+});

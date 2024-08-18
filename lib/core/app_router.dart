@@ -1,3 +1,4 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
@@ -11,6 +12,7 @@ part 'app_router.g.dart';
 @riverpod
 GoRouter router(RouterRef ref) {
   final navigatorKey = GlobalKey<NavigatorState>();
+  final authState = ref.watch(authStateProvider.stream);
   final authStatus = ref.read(firebaseAuthInstanceProvider);
   // final listenable = ref.read(routerProvider);
   return GoRouter(
@@ -27,17 +29,6 @@ GoRouter router(RouterRef ref) {
         builder: (context, state) => const HomePage(),
       ),
     ],
-    // redirect: (context, state) {
-    //   final publicRoutes = [AuthPage.route()];
-    //   if (publicRoutes.contains(state.matchedLocation)) {
-    //     return null;
-    //   }
-    //   final authState = ref.read(authProvider);
-    //   if (authState is AuthStateSuccess) {
-    //     return "/home";
-    //   }
-    //   return AuthPage.route();
-    // },
     redirect: (context, state) {
       final loggedIn = authStatus.currentUser != null;
       final loggingIn = state.matchedLocation == AuthPage.route();
@@ -45,5 +36,12 @@ GoRouter router(RouterRef ref) {
       if (loggedIn) return HomePage.route();
       return null;
     },
+    refreshListenable: GoRouterRefreshStream(authState),
   );
+}
+
+class GoRouterRefreshStream extends ChangeNotifier {
+  GoRouterRefreshStream(Stream<User?> stream) {
+    stream.listen((_) => notifyListeners());
+  }
 }

@@ -1,4 +1,3 @@
-import 'package:clippy/features/auth/providers/auth.riverpod.dart';
 import 'package:flex_color_scheme/flex_color_scheme.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -12,9 +11,6 @@ class AppInit extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final router = ref.watch(routerProvider);
-    ref.listen(authProvider, (prev, next) {
-      router.refresh(); 
-    });
     return LifecycleMonitor(
       child: MaterialApp.router(
         debugShowCheckedModeBanner: false,
