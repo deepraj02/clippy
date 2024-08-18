@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 
+import '../../../core/providers/firebase_providers.dart';
 import '../../auth/providers/auth.riverpod.dart';
 import '../../auth/state/auth.state.dart';
 
@@ -13,20 +14,26 @@ class HomePage extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
+    final name = ref.watch(authStateProvider.select(
+      (value) => value.valueOrNull?.displayName,
+    ));
     final newState = ref.read(authProvider);
+
     return Scaffold(
-      appBar: AppBar(
-        title: const Text("Home Page"),
-      ),
       body: Center(
         child: Column(
-          mainAxisSize: MainAxisSize.min,
+          mainAxisAlignment: MainAxisAlignment.center,
+          crossAxisAlignment: CrossAxisAlignment.center,
           children: [
+            Text("Wellcome, $name. This is your homepage."),
             ElevatedButton(
               onPressed: () async {
                 try {
                   await ref.read(authProvider.notifier).logout();
-                  if(newState is AuthStateInitial && context.mounted) return context.pop();
+                  if (newState is AuthStateInitial && context.mounted) {
+                    // return context.refresh();
+                    return context.replace("/login");
+                  }
                 } catch (e) {
                   log(e.toString());
                 }

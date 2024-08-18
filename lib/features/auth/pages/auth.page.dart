@@ -64,7 +64,6 @@ class _AuthPageState extends ConsumerState<AuthPage> {
                       await ref
                           .read(authProvider.notifier)
                           .continueWithGoogle();
-
                       if (newState is AuthStateSuccess && context.mounted) {
                         context.push("/home");
                       }

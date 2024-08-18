@@ -52,8 +52,8 @@ class AuthService {
         }
       }
       log("UserCred:  ${userCredential.user!.uid}\n");
-      log("USER : $user\n");
-      log(" AUTH CurrentUser : ${_auth.currentUser!}\n");
+      // log("USER : $user\n");
+      // log(" AUTH CurrentUser : ${_auth.currentUser!}\n");
       return right(user!);
     } catch (e) {
       log(e.toString());
