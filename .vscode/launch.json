@@ -4,6 +4,8 @@
     // For more information, visit: https://go.microsoft.com/fwlink/?linkid=830387
     "version": "0.2.0",
     "configurations": [
+        
+        
         {
             "name": "clippy",
             "request": "launch",
@@ -14,24 +16,24 @@
                 "secrets.json"
             ]
         },
-        {
-            "name": "IPhone 15 Plus",
-            "request": "launch",
-            "type": "dart",
-            "deviceId": "295A1825-6AC6-453F-AA9C-6BFD1958945C"
-        },
-        {
-            "name": "MacOS",
-            "request": "launch",
-            "type": "dart",
-            "deviceId": "macos"
-        }
+        // {
+        //     "name": "IPhone",
+        //     "request": "launch",
+        //     "type": "dart",
+        //     "deviceId": "66A949E0-70EF-4CE7-9782-4FBF90F45B19"
+        // },
+        // {
+        //     "name": "MacOS",
+        //     "request": "launch",
+        //     "type": "dart",
+        //     "deviceId": "macos"
+        // }
     ],
     "compounds": [
         {
             "name": "Mac and IPhone",
             "configurations": [
-                "IPhone 15 Plus",
+                "IPhone",
                 // "MacOS",
             ]
         }
