@@ -3,9 +3,9 @@ import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 
-import '../features/auth/pages/auth.page.dart';
-import '../features/home/pages/home.page.dart';
-import 'providers/firebase_providers.dart';
+import '../../features/auth/pages/auth.page.dart';
+import '../../features/home/pages/home.page.dart';
+import '../providers/firebase_providers.dart';
 
 part 'app_router.g.dart';
 
