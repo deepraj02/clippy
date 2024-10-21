@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 
+import '../../../generated/l10n.dart';
 import '../providers/auth.riverpod.dart';
 import '../state/auth.state.dart';
 
@@ -71,7 +72,7 @@ class _AuthPageState extends ConsumerState<AuthPage> {
                       dev.log(e.toString());
                     }
                   },
-                  child: const Text("Sign In with Google"),
+                  child: Text(S.of(context).googleSignIn),
                 ),
               ],
             ),
