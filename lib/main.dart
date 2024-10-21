@@ -13,8 +13,14 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:package_info_plus/package_info_plus.dart';
 import 'package:sentry_flutter/sentry_flutter.dart';
 
+import 'core/providers/bootstrap_provider.dart';
+
 Future<void> main() async {
+  final container = ProviderContainer();
+  container.read(bootstrapProvider.notifier).bootstrapApp();
   const String sentryDSN = String.fromEnvironment('SENTRY_DSN');
+  print(
+      '-------------------------------------------------------------------------------------');
   WidgetsFlutterBinding.ensureInitialized();
   final deviceInfo = await _getDeviceInfo();
   final packageInfo = await PackageInfo.fromPlatform();
@@ -64,7 +70,7 @@ Future<void> main() async {
   }
   runApp(
     const ProviderScope(
-      child: AppInit(), 
+      child: AppInit(),
     ),
   );
 }

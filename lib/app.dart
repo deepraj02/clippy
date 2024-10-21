@@ -13,9 +13,16 @@ class AppInit extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     final router = ref.watch(routerProvider);
     final booting = ref.watch(bootstrapProvider);
+
     return LifecycleMonitor(
       child: booting
-          ? const Center(child: CircularProgressIndicator())
+          ? const MaterialApp(
+              home: Scaffold(
+                body: Center(
+                  child: CircularProgressIndicator(),
+                ),
+              ),
+            )
           : MaterialApp.router(
               debugShowCheckedModeBanner: false,
               theme: FlexColorScheme.light(scheme: FlexScheme.indigoM3).toTheme,
@@ -25,6 +32,7 @@ class AppInit extends ConsumerWidget {
               routerDelegate: router.routerDelegate,
               routeInformationParser: router.routeInformationParser,
               routeInformationProvider: router.routeInformationProvider,
+
               // home: const Scaffold(
               //   body: AuthPage(),
               // ),
