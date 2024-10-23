@@ -8,7 +8,7 @@ part 'gen/bootstrap_provider.g.dart';
 class Bootstrap extends _$Bootstrap {
   @override
   bool build() {
-    Future.delayed(const Duration(seconds: 5), () => bootstrapApp());
+    Future.delayed(const Duration(seconds: 1), () => bootstrapApp());
 
     return true;
   }

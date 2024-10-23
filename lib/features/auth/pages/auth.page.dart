@@ -72,7 +72,7 @@ class _AuthPageState extends ConsumerState<AuthPage> {
                       dev.log(e.toString());
                     }
                   },
-                  child: Text(S.of(context).googleSignIn),
+                  child: Text(AppLocalization.of(context).googleSignIn),
                 ),
               ],
             ),

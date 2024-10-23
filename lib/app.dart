@@ -7,6 +7,7 @@ import 'core/helpers/lifecycle_monitor.dart';
 import 'core/providers/bootstrap_provider.dart';
 import 'core/router/app_router.dart';
 import 'generated/l10n.dart';
+import 'l10n/providers/locale_provider.dart';
 
 class AppInit extends ConsumerWidget {
   const AppInit({super.key});
@@ -31,9 +32,9 @@ class AppInit extends ConsumerWidget {
               darkTheme:
                   FlexColorScheme.dark(scheme: FlexScheme.indigoM3).toTheme,
               themeMode: ThemeMode.system,
-              locale: const Locale.fromSubtags(languageCode: "en"),
+              locale: ref.watch(localeSettingsProvider),
               localizationsDelegates: const [
-                S.delegate,
+                AppLocalization.delegate,
                 GlobalMaterialLocalizations.delegate,
                 GlobalWidgetsLocalizations.delegate,
                 GlobalCupertinoLocalizations.delegate,
