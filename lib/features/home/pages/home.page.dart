@@ -20,6 +20,13 @@ class HomePage extends ConsumerWidget {
     final newState = ref.read(authProvider);
 
     return Scaffold(
+      appBar: AppBar(
+        actions: [
+          IconButton(
+              onPressed: () => context.push("/settings"),
+              icon: const Icon(Icons.settings))
+        ],
+      ),
       body: Center(
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,

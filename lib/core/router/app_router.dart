@@ -1,3 +1,4 @@
+import 'package:clippy/features/settings/pages/settings.page.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
@@ -14,7 +15,7 @@ GoRouter router(RouterRef ref) {
   final navigatorKey = GlobalKey<NavigatorState>();
   final authState = ref.watch(authStateProvider.stream);
   final authStatus = ref.read(firebaseAuthInstanceProvider);
-  // final listenable = ref.read(routerProvider);
+
   return GoRouter(
     navigatorKey: navigatorKey,
     debugLogDiagnostics: true,
@@ -28,12 +29,20 @@ GoRouter router(RouterRef ref) {
         path: HomePage.route(),
         builder: (context, state) => const HomePage(),
       ),
+      GoRoute(
+        path: SettingsPage.route(),
+        builder: (context, state) => const SettingsPage(),
+      ),
     ],
     redirect: (context, state) {
       final loggedIn = authStatus.currentUser != null;
       final loggingIn = state.matchedLocation == AuthPage.route();
-      if (!loggedIn) return loggingIn ? null : AuthPage.route();
-      if (loggedIn) return HomePage.route();
+      if (!loggedIn && !loggingIn) {
+        return AuthPage.route();
+      }
+      if (loggedIn && loggingIn) {
+        return HomePage.route();
+      }
       return null;
     },
     refreshListenable: GoRouterRefreshStream(authState),
