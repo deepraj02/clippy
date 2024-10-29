@@ -20,6 +20,7 @@ class AppInit extends ConsumerWidget {
     return LifecycleMonitor(
       child: booting
           ? const MaterialApp(
+              debugShowCheckedModeBanner: false,
               home: Scaffold(
                 body: Center(
                   child: CircularProgressIndicator(),
