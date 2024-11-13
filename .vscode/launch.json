@@ -1,14 +1,33 @@
 {
+    "version": "0.2.0",
     "configurations": [
-    {
-        "name": "Flutter",
-        "type": "dart",
-        "request": "launch",
-        "program": "lib/main.dart",
-        "args": [
-            "--dart-define-from-file",
-            "secrets.json"
-        ]
-    }
+        {
+            "name": "Flutter iOS",
+            "type": "dart",
+            "request": "launch",
+            "program": "lib/main.dart",
+            "args": [
+                "--dart-define-from-file",
+                "secrets.json"
+            ],
+            "deviceId": "iphone"
+        },
+        {
+            "name": "Flutter macOS",
+            "type": "dart",
+            "request": "launch",
+            "program": "lib/main.dart",
+            "args": [
+                "--dart-define-from-file",
+                "secrets.json"
+            ],
+            "deviceId": "macos"
+        }
+    ],
+    "compounds": [
+        {
+            "name": "All Devices",
+            "configurations": ["Flutter iOS", "Flutter macOS"]
+        }
     ]
 }

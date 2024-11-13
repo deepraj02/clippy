@@ -32,7 +32,7 @@ class HomePage extends ConsumerWidget {
           mainAxisAlignment: MainAxisAlignment.center,
           crossAxisAlignment: CrossAxisAlignment.center,
           children: [
-            Text("Wellcome, $name. This is your homepage."),
+            Text("Wellcome, ${name!.split(" ")[0]}. This is your homepage."),
             ElevatedButton(
               onPressed: () async {
                 try {
