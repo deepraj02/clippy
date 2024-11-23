@@ -1,12 +1,8 @@
-import 'dart:developer';
-
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 
 import '../../../core/providers/firebase_providers.dart';
-import '../../auth/providers/auth.riverpod.dart';
-import '../../auth/state/auth.state.dart';
 
 class HomePage extends ConsumerWidget {
   static String route() => "/home";
@@ -17,38 +13,24 @@ class HomePage extends ConsumerWidget {
     final name = ref.watch(authStateProvider.select(
       (value) => value.valueOrNull?.displayName,
     ));
-    final newState = ref.read(authProvider);
 
     return Scaffold(
       appBar: AppBar(
+        title: const Text(
+          "Clippy",
+        ),
         actions: [
           IconButton(
               onPressed: () => context.push("/settings"),
               icon: const Icon(Icons.settings))
         ],
       ),
-      body: Center(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          crossAxisAlignment: CrossAxisAlignment.center,
-          children: [
-            Text("Wellcome, ${name!.split(" ")[0]}. This is your homepage."),
-            ElevatedButton(
-              onPressed: () async {
-                try {
-                  await ref.read(authProvider.notifier).logout();
-                  if (newState is AuthStateInitial && context.mounted) {
-                    // return context.refresh();
-                    return context.replace("/login");
-                  }
-                } catch (e) {
-                  log(e.toString());
-                }
-              },
-              child: const Text("Logout"),
-            ),
-          ],
-        ),
+      body: Column(
+        mainAxisAlignment: MainAxisAlignment.start,
+        crossAxisAlignment: CrossAxisAlignment.center,
+        children: [
+          Text("Welcome, ${name?.split(" ")[0] ?? 'Guest'}"),
+        ],
       ),
     );
   }
