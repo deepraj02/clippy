@@ -1,3 +1,5 @@
 {
-  "googleSignIn": "Registrarse con Google"
+  "googleSignIn": "Registrarse con Google",
+  "login": "Iniciar sesión",
+  "logout": "Cerrar sesión"
 }

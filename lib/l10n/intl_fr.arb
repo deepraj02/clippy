@@ -1,3 +1,5 @@
 {
-  "googleSignIn": "Se connecter avec Google"
+  "googleSignIn": "Se connecter avec Google",
+  "login": "Connexion",
+  "logout": "Déconnexion"
 }
