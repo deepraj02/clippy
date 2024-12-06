@@ -19,9 +19,13 @@ class AppInit extends ConsumerWidget {
 
     return LifecycleMonitor(
       child: booting
-          ? const MaterialApp(
+          ? MaterialApp(
               debugShowCheckedModeBanner: false,
-              home: Scaffold(
+              theme: FlexColorScheme.light(scheme: FlexScheme.indigoM3).toTheme,
+              darkTheme:
+                  FlexColorScheme.dark(scheme: FlexScheme.indigoM3).toTheme,
+              themeMode: ThemeMode.system,
+              home: const Scaffold(
                 body: Center(
                   child: CircularProgressIndicator(),
                 ),
@@ -44,14 +48,11 @@ class AppInit extends ConsumerWidget {
                 Locale.fromSubtags(languageCode: "en"),
                 Locale.fromSubtags(languageCode: "es"),
                 Locale.fromSubtags(languageCode: "fr"),
+                Locale.fromSubtags(languageCode: "bn"),
               ],
               routerDelegate: router.routerDelegate,
               routeInformationParser: router.routeInformationParser,
               routeInformationProvider: router.routeInformationProvider,
-
-              // home: const Scaffold(
-              //   body: AuthPage(),
-              // ),
             ),
     );
   }

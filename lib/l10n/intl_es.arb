@@ -1,5 +1,4 @@
 {
-  "googleSignIn": "Registrarse con Google",
-  "login": "Iniciar sesión",
+  "getStarted": "Iniciar",
   "logout": "Cerrar sesión"
 }

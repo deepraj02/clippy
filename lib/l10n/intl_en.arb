@@ -1,5 +1,4 @@
 {
-    "googleSignIn": "Sign In with Google",
-    "login": "Login",
+    "getStarted": "Get Started",
     "logout": "Logout"
 }

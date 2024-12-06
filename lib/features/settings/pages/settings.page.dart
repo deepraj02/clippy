@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 
+import '../../../generated/l10n.dart';
 import '../../auth/providers/auth.riverpod.dart';
 import '../../auth/state/auth.state.dart';
 
@@ -33,7 +34,7 @@ class SettingsPage extends ConsumerWidget {
               log(e.toString());
             }
           },
-          child: const Text("Logout"),
+          child: Text(AppLocalization.of(context).logout),
         ),
       ),
     );

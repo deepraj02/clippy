@@ -2,7 +2,6 @@ import 'dart:developer';
 import 'dart:io';
 
 import 'package:clippy/app.dart';
-import 'package:clippy/firebase_options.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:device_info_plus/device_info_plus.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -14,52 +13,21 @@ import 'package:package_info_plus/package_info_plus.dart';
 import 'package:sentry_flutter/sentry_flutter.dart';
 
 import 'core/providers/bootstrap_provider.dart';
+import 'firebase_options.dart';
 
 Future<void> main() async {
   final container = ProviderContainer();
   container.read(bootstrapProvider.notifier).bootstrapApp();
   const String sentryDSN = String.fromEnvironment('SENTRY_DSN');
-  print(
-      '-------------------------------------------------------------------------------------');
+
   WidgetsFlutterBinding.ensureInitialized();
   final deviceInfo = await _getDeviceInfo();
   final packageInfo = await PackageInfo.fromPlatform();
+
   await Firebase.initializeApp(
     options: DefaultFirebaseOptions.currentPlatform,
   );
-  if (kReleaseMode) {
-    try {
-      await SentryFlutter.init(
-        (options) {
-          options.dsn = sentryDSN;
-          options.tracesSampleRate = 1.0;
-          options.attachStacktrace = true;
-          options.debug = kDebugMode;
-          options.sendDefaultPii = true;
-          options.environment = kReleaseMode ? 'production' : 'development';
 
-          options.beforeSend = (event, hint) {
-            event.tags?['app_version'] = packageInfo.version;
-            event.contexts['device_info'] = deviceInfo;
-            return event;
-          };
-        },
-        appRunner: () => runApp(
-          const ProviderScope(
-            child: AppInit(),
-          ),
-        ),
-      );
-    } catch (e, stackTrace) {
-      Sentry.captureException(
-        e,
-        stackTrace: stackTrace,
-        withScope: (scope) {
-          scope.contexts['device_info'] = deviceInfo;
-        },
-      );
-    }
-  }
   if (kDebugMode) {
     try {
       FirebaseFirestore.instance.useFirestoreEmulator('localhost', 8080);
@@ -68,9 +36,25 @@ Future<void> main() async {
       log(e.toString());
     }
   }
-  runApp(
-    const ProviderScope(
-      child: AppInit(),
+  await SentryFlutter.init(
+    (options) {
+      options.dsn = sentryDSN;
+      options.tracesSampleRate = 1.0;
+      options.attachStacktrace = true;
+      options.debug = kDebugMode;
+      options.sendDefaultPii = true;
+      options.environment = kReleaseMode ? 'production' : 'development';
+
+      options.beforeSend = (event, hint) {
+        event.tags?['app_version'] = packageInfo.version;
+        event.contexts['device_info'] = deviceInfo;
+        return event;
+      };
+    },
+    appRunner: () => runApp(
+      const ProviderScope(
+        child: AppInit(),
+      ),
     ),
   );
 }

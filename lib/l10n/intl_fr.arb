@@ -1,5 +1,4 @@
 {
-  "googleSignIn": "Se connecter avec Google",
-  "login": "Connexion",
+  "getStarted": "Commencer",
   "logout": "Déconnexion"
 }
