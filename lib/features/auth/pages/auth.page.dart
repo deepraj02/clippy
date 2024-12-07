@@ -1,13 +1,14 @@
 import 'dart:developer' as dev;
 
 import 'package:flutter/material.dart';
+import 'package:flutter_animate/flutter_animate.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
-import 'package:google_fonts/google_fonts.dart';
 
-import '../../../generated/l10n.dart';
+import '../../../core/helpers/widgets/clippy_text.dart';
 import '../providers/auth.riverpod.dart';
 import '../state/auth.state.dart';
+import '../widgets/auth_button.dart';
 
 class AuthPage extends ConsumerStatefulWidget {
   const AuthPage({super.key});
@@ -34,9 +35,53 @@ class _AuthPageState extends ConsumerState<AuthPage> {
   @override
   Widget build(BuildContext context) {
     final newState = ref.read(authProvider);
+
+    Future<void> handleAuth(AuthState newState, BuildContext context) async {
+      setState(() {
+        booting = true;
+      });
+      try {
+        await ref.read(authProvider.notifier).continueWithGoogle();
+        booting = true;
+        if (newState is AuthStateSuccess && context.mounted) {
+          context.push("/home");
+        }
+        setState(() {
+          booting = false;
+        });
+      } on Exception catch (e) {
+        dev.log(e.toString());
+      }
+    }
+
     return Scaffold(
+      backgroundColor: const Color(0xFFCEEACA),
       body: Stack(
         children: [
+          Align(
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.center,
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                const ClippyText.headline(
+                  text: "Share Clipboard\n across Devices",
+                  color: Colors.black,
+                )
+                    .animate(
+                        // controller: _controller,
+                        )
+                    .slideY(
+                      begin: 1,
+                      end: 0,
+                      delay: const Duration(milliseconds: 500),
+                    )
+                    .moveY(
+                      begin: 0,
+                      end: 1,
+                    ),
+              ],
+            ),
+          ),
           Align(
             alignment: Alignment.bottomCenter,
             child: Padding(
@@ -46,88 +91,17 @@ class _AuthPageState extends ConsumerState<AuthPage> {
                 splashColor: Colors.white,
                 customBorder: const StadiumBorder(),
                 onTap: () async {
-                  setState(() {
-                    booting = true;
-                  });
-                  try {
-                    await ref.read(authProvider.notifier).continueWithGoogle();
-                    booting = true;
-                    if (newState is AuthStateSuccess && context.mounted) {
-                      context.push("/home");
-                    }
-                  } on Exception catch (e) {
-                    dev.log(e.toString());
-                  } finally {
-                    setState(() {
-                      booting = false;
-                    });
-                  }
+                  await handleAuth(newState, context);
                 },
-                child: Container(
-                  height: MediaQuery.sizeOf(context).height * .09,
-                  width: MediaQuery.sizeOf(context).width * .46,
-                  decoration: const ShapeDecoration(
-                    color: Color(0xFF0A0A0A),
-                    shape: StadiumBorder(),
-                  ),
-                  child: booting
-                      ? const Center(
-                          child: CircularProgressIndicator(
-                            color: Colors.white,
-                          ),
-                        )
-                      : Row(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          children: [
-                            ClippyText.headline(
-                              text: AppLocalization.of(context).getStarted,
-                            ),
-                          ],
-                        ),
-                ),
+                child: AuthButton(booting: booting)
+                    .animate()
+                    .slideX(delay: const Duration(seconds: 1))
+                    .fadeIn(),
               ),
             ),
           )
         ],
       ),
     );
-  }
-}
-
-class ClippyText extends StatelessWidget {
-  const ClippyText({
-    super.key,
-    required this.text,
-    required this.fontSize,
-    this.fontWeight,
-    this.color,
-  });
-  final String text;
-  final double fontSize;
-  final FontWeight? fontWeight;
-  final Color? color;
-
-  const ClippyText.headline({
-    super.key,
-    required this.text,
-    this.fontWeight,
-    this.color,
-  }) : fontSize = 16;
-
-  const ClippyText.description({
-    super.key,
-    required this.text,
-    this.fontWeight,
-    this.color,
-  }) : fontSize = 16;
-
-  @override
-  Widget build(BuildContext context) {
-    return Text(text,
-        style: GoogleFonts.sora(
-          color: color ?? Colors.white,
-          fontSize: fontSize,
-          fontWeight: fontWeight ?? FontWeight.normal,
-        ));
   }
 }
