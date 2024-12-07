@@ -1,10 +1,11 @@
 import 'dart:developer';
 
+import 'package:clippy/generated/l10n.dart';
+import 'package:clippy/l10n/providers/locale_provider.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 
-import '../../../generated/l10n.dart';
 import '../../auth/providers/auth.riverpod.dart';
 import '../../auth/state/auth.state.dart';
 
@@ -17,26 +18,86 @@ class SettingsPage extends ConsumerWidget {
     final newState = ref.read(authProvider);
 
     return Scaffold(
-      appBar: AppBar(
-        title: const Text("Settings"),
-      ),
-      body: Center(
-        child: ElevatedButton(
-          onPressed: () async {
-            try {
-              await ref.read(authProvider.notifier).logout();
-              if (newState is AuthStateInitial && context.mounted) {
-                //return context.refresh();
-                context.pop();
-                return context.replace("/login");
-              }
-            } catch (e) {
-              log(e.toString());
-            }
-          },
-          child: Text(AppLocalization.of(context).logout),
+        appBar: AppBar(
+          title: Text(AppLocalization.of(context).settings),
         ),
-      ),
-    );
+        body: ListView(
+          children: [
+            ListTile(
+              title: const Text("Language"),
+              subtitle: Text(ref.watch(localeSettingsProvider).toLanguageTag()),
+              leading: const Icon(Icons.language),
+              onTap: () {},
+              trailing: DropdownButton<Locale>(
+                value: ref.read(localeSettingsProvider),
+                onChanged: (value) {
+                  if (value != null) {
+                    ref
+                        .read(localeSettingsProvider.notifier)
+                        .setLanguage(value);
+                  }
+                },
+                items: [
+                  DropdownMenuItem(
+                    value: const Locale.fromSubtags(languageCode: "en"),
+                    child: Text(AppLocalization.of(context).english),
+                  ),
+                  DropdownMenuItem(
+                    value: const Locale.fromSubtags(languageCode: "es"),
+                    child: Text(AppLocalization.of(context).spanish),
+                  ),
+                  DropdownMenuItem(
+                    value: const Locale.fromSubtags(languageCode: "bn"),
+                    child: Text(AppLocalization.of(context).bengali),
+                  ),
+                  DropdownMenuItem(
+                    value: const Locale.fromSubtags(languageCode: "fr"),
+                    child: Text(AppLocalization.of(context).french),
+                  ),
+                ],
+              ),
+            ),
+            ListTile(
+              title: const Text("Language"),
+              leading: const Icon(Icons.language),
+              onTap: () {},
+            ),
+            ListTile(
+              title: Text(AppLocalization.of(context).logout),
+              leading: const Icon(Icons.logout_rounded),
+              onTap: () async {
+                try {
+                  await ref.read(authProvider.notifier).logout();
+                  if (newState is AuthStateInitial && context.mounted) {
+                    context.pop();
+                    return context.replace("/login");
+                  }
+                } catch (e) {
+                  log(e.toString());
+                }
+              },
+            ),
+          ],
+        )
+        // Center(
+        //   child: ElevatedButton(
+        //     onPressed: () async {
+        //       try {
+        //         await ref.read(authProvider.notifier).logout();
+        //         if (newState is AuthStateInitial && context.mounted) {
+        //           context.pop();
+        //           return context.replace("/login");
+        //         }
+        //       } catch (e) {
+        //         log(e.toString());
+        //       }
+        //     },
+        //     child: Text(
+        //       AppLocalization.of(context).logout,
+        //     ),
+        //   ),
+        // ),
+
+        );
   }
 }

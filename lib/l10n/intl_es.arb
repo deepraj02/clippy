@@ -1,4 +1,9 @@
 {
   "getStarted": "Iniciar",
-  "logout": "Cerrar sesión"
+  "logout": "Cerrar sesión",
+  "settings": "Ajustes",
+  "spanish": "Español",
+  "english": "Inglés",
+  "bengali": "Bengalí",
+  "french": "Francés"
 }

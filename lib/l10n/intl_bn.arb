@@ -1,4 +1,9 @@
 {
   "getStarted": "শুরু করুন",
-  "logout": "লগআউট করুন"
+  "logout": "লগআউট করুন",
+  "settings": "সেটিংস",
+  "spanish": "স্প্যানিশ",
+  "english": "ইংরেজি",
+  "bengali": "বাংলা",
+  "french": "ফরাসী"
 }

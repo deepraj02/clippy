@@ -67,9 +67,7 @@ class _AuthPageState extends ConsumerState<AuthPage> {
                   text: "Share Clipboard\n across Devices",
                   color: Colors.black,
                 )
-                    .animate(
-                        // controller: _controller,
-                        )
+                    .animate()
                     .slideY(
                       begin: 1,
                       end: 0,

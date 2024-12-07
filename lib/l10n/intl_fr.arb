@@ -1,4 +1,9 @@
 {
   "getStarted": "Commencer",
-  "logout": "Déconnexion"
+  "logout": "Déconnexion",
+  "settings": "Paramètres",
+  "spanish": "Espagnol",
+  "english": "Anglais",
+  "bengali": "Bengali",
+  "french": "Français"
 }

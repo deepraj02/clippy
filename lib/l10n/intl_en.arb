@@ -1,4 +1,13 @@
 {
     "getStarted": "Get Started",
-    "logout": "Logout"
+    "logout": "Logout",
+    "settings":"Settings",
+    
+    
+    
+
+    "spanish":"Spanish",
+    "english": "English",
+    "bengali":"Bengali",
+    "french": "French"
 }
