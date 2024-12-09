@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 
+import '../../../core/models/app_theme.module.dart';
 import '../../../core/providers/user_preferences.provider.dart';
 import '../../auth/providers/auth.riverpod.dart';
 import '../../auth/state/auth.state.dart';
@@ -57,9 +58,34 @@ class SettingsPage extends ConsumerWidget {
               ),
             ),
             ListTile(
-              title: const Text("Language"),
-              leading: const Icon(Icons.language),
-              onTap: () {},
+              title: const Text("Theme"),
+              subtitle: Text(ref
+                  .watch(userPreferencesProvider.select((v) => v.theme))
+                  .label),
+              leading: const Icon(Icons.color_lens),
+              trailing: DropdownButton<AppTheme>(
+                value:
+                    ref.watch(userPreferencesProvider.select((v) => v.theme)),
+                onChanged: (value) {
+                  if (value != null) {
+                    ref.read(userPreferencesProvider.notifier).setTheme(value);
+                  }
+                },
+                items: [
+                  DropdownMenuItem(
+                    value: AppTheme.light,
+                    child: Text(AppTheme.light.label),
+                  ),
+                  DropdownMenuItem(
+                    value: AppTheme.dark,
+                    child: Text(AppTheme.dark.label),
+                  ),
+                  DropdownMenuItem(
+                    value: AppTheme.system,
+                    child: Text(AppTheme.system.label),
+                  ),
+                ],
+              ),
             ),
             ListTile(
               title: Text(AppLocalization.of(context).logout),
