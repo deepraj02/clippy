@@ -37,12 +37,13 @@ class _AuthPageState extends ConsumerState<AuthPage> {
     final newState = ref.read(authProvider);
 
     Future<void> handleAuth(AuthState newState, BuildContext context) async {
+      if (!mounted) return;
       setState(() {
         booting = true;
       });
       try {
         await ref.read(authProvider.notifier).continueWithGoogle();
-        booting = true;
+        if (!mounted) return;
         if (newState is AuthStateSuccess && context.mounted) {
           context.push("/home");
         }

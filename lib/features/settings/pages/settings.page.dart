@@ -1,11 +1,11 @@
 import 'dart:developer';
 
 import 'package:clippy/generated/l10n.dart';
-import 'package:clippy/l10n/providers/locale_provider.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 
+import '../../../core/providers/user_preferences.provider.dart';
 import '../../auth/providers/auth.riverpod.dart';
 import '../../auth/state/auth.state.dart';
 
@@ -25,16 +25,15 @@ class SettingsPage extends ConsumerWidget {
           children: [
             ListTile(
               title: const Text("Language"),
-              subtitle: Text(ref.watch(localeSettingsProvider).toLanguageTag()),
+              subtitle: Text(
+                  ref.watch(userPreferencesProvider).locale.toLanguageTag()),
               leading: const Icon(Icons.language),
               onTap: () {},
               trailing: DropdownButton<Locale>(
-                value: ref.read(localeSettingsProvider),
+                value: ref.read(userPreferencesProvider).locale,
                 onChanged: (value) {
                   if (value != null) {
-                    ref
-                        .read(localeSettingsProvider.notifier)
-                        .setLanguage(value);
+                    ref.read(userPreferencesProvider.notifier).setLocale(value);
                   }
                 },
                 items: [

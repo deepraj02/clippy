@@ -16,11 +16,11 @@ import 'core/providers/bootstrap_provider.dart';
 import 'firebase_options.dart';
 
 Future<void> main() async {
+  WidgetsFlutterBinding.ensureInitialized();
   final container = ProviderContainer();
-  container.read(bootstrapProvider.notifier).bootstrapApp();
+  await container.read(bootstrapProvider.notifier).bootstrapApp();
   const String sentryDSN = String.fromEnvironment('SENTRY_DSN');
 
-  WidgetsFlutterBinding.ensureInitialized();
   final deviceInfo = await _getDeviceInfo();
   final packageInfo = await PackageInfo.fromPlatform();
 
@@ -53,6 +53,7 @@ Future<void> main() async {
     },
     appRunner: () => runApp(
       const ProviderScope(
+        // parent: container,
         child: AppInit(),
       ),
     ),

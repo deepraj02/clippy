@@ -5,9 +5,9 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import 'core/helpers/lifecycle_monitor.dart';
 import 'core/providers/bootstrap_provider.dart';
+import 'core/providers/user_preferences.provider.dart';
 import 'core/router/app_router.dart';
 import 'generated/l10n.dart';
-import 'l10n/providers/locale_provider.dart';
 
 class AppInit extends ConsumerWidget {
   const AppInit({super.key});
@@ -16,6 +16,7 @@ class AppInit extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     final router = ref.watch(routerProvider);
     final booting = ref.watch(bootstrapProvider);
+    
 
     return LifecycleMonitor(
       child: booting
@@ -36,8 +37,14 @@ class AppInit extends ConsumerWidget {
               theme: FlexColorScheme.light(scheme: FlexScheme.indigoM3).toTheme,
               darkTheme:
                   FlexColorScheme.dark(scheme: FlexScheme.indigoM3).toTheme,
-              themeMode: ThemeMode.system,
-              locale: ref.watch(localeSettingsProvider),
+              themeMode: ref
+                  .watch(
+                    userPreferencesProvider.select((value) => value.theme),
+                  )
+                  .mode,
+              locale: ref.watch(
+                userPreferencesProvider.select((value) => value.locale),
+              ),
               localizationsDelegates: const [
                 AppLocalization.delegate,
                 GlobalMaterialLocalizations.delegate,
