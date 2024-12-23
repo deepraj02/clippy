@@ -2,7 +2,7 @@
   "project_info": {
     "project_number": "553750875272",
     "project_id": "clippy-indie",
-    "storage_bucket": "clippy-indie.appspot.com"
+    "storage_bucket": "clippy-indie.firebasestorage.app"
   },
   "client": [
     {
@@ -13,6 +13,14 @@
         }
       },
       "oauth_client": [
+        {
+          "client_id": "553750875272-iqgjbco828ggf76mi3flfmoun0ffuf9p.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.infamousindie.clippy.clippy",
+            "certificate_hash": "4b7b41f72bdbe40a8cc1f848ee481f5e5b26af3a"
+          }
+        },
         {
           "client_id": "553750875272-82a6kcoel23igh92512nv0cnqnkpgvrk.apps.googleusercontent.com",
           "client_type": 3
@@ -27,7 +35,7 @@
         "appinvite_service": {
           "other_platform_oauth_client": [
             {
-              "client_id": "553750875272-82a6kcoel23igh92512nv0cnqnkpgvrk.apps.googleusercontent.com",
+              "client_id": "553750875272-350t5m9eb5bamj5d3pu6gah3kl0v94sc.apps.googleusercontent.com",
               "client_type": 3
             },
             {
