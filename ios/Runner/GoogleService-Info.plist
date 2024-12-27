@@ -19,7 +19,7 @@
 	<key>PROJECT_ID</key>
 	<string>clippy-indie</string>
 	<key>STORAGE_BUCKET</key>
-	<string>clippy-indie.appspot.com</string>
+	<string>clippy-indie.firebasestorage.app</string>
 	<key>IS_ADS_ENABLED</key>
 	<false></false>
 	<key>IS_ANALYTICS_ENABLED</key>
