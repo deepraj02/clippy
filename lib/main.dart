@@ -11,6 +11,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:package_info_plus/package_info_plus.dart';
 import 'package:sentry_flutter/sentry_flutter.dart';
+import 'package:clippy/features/home/services/clipboard_service.dart';
 
 import 'core/providers/bootstrap_provider.dart';
 import 'firebase_options.dart';
@@ -36,6 +37,10 @@ Future<void> main() async {
       log(e.toString());
     }
   }
+
+  final ClipboardService clipboardService = ClipboardService();
+  clipboardService.startMonitoring();
+
   await SentryFlutter.init(
     (options) {
       options.dsn = sentryDSN;
