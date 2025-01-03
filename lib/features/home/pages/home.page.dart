@@ -16,6 +16,8 @@ class HomePage extends ConsumerStatefulWidget {
 
 class _HomePageState extends ConsumerState<HomePage> {
   final ClipboardService _clipboardService = ClipboardService();
+  bool _isClicked = false;
+  int _clickedIndex = -1;
 
   @override
   void initState() {
@@ -65,12 +67,24 @@ class _HomePageState extends ConsumerState<HomePage> {
                           child: ListTile(
                             title: Text(clipboardHistory[index]),
                             trailing: IconButton(
-                                onPressed: () {
-                                  
-                                  Clipboard.setData(ClipboardData(
-                                      text: clipboardHistory[index]));
-                                },
-                                icon: const Icon(Icons.copy)),
+                              onPressed: () {
+                                setState(() {
+                                  _isClicked = true;
+                                  _clickedIndex = index;
+                                });
+                                Clipboard.setData(ClipboardData(
+                                    text: clipboardHistory[index]));
+                                Future.delayed(const Duration(seconds: 1), () {
+                                  setState(() {
+                                    _isClicked = false;
+                                    _clickedIndex = -1;
+                                  });
+                                });
+                              },
+                              icon: _isClicked && _clickedIndex == index
+                                  ? const Icon(Icons.check)
+                                  : const Icon(Icons.copy),
+                            ),
                           ),
                         ),
                       );
