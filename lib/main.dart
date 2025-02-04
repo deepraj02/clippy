@@ -11,7 +11,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:package_info_plus/package_info_plus.dart';
 import 'package:sentry_flutter/sentry_flutter.dart';
-import 'package:clippy/features/home/services/clipboard_service.dart';
 
 import 'core/providers/bootstrap_provider.dart';
 import 'firebase_options.dart';
@@ -26,6 +25,7 @@ Future<void> main() async {
   final packageInfo = await PackageInfo.fromPlatform();
 
   await Firebase.initializeApp(
+    name: "Clippy",
     options: DefaultFirebaseOptions.currentPlatform,
   );
 
@@ -38,8 +38,7 @@ Future<void> main() async {
     }
   }
 
-  final ClipboardService clipboardService = ClipboardService();
-  clipboardService.startMonitoring();
+
 
   await SentryFlutter.init(
     (options) {
