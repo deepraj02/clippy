@@ -1,10 +1,12 @@
 import 'package:clippy/features/home/services/clipboard_service.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 
 import '../../../core/providers/firebase_providers.dart';
+import '../providers/clipboard.service.riverpod.dart';
 
 class HomePage extends ConsumerStatefulWidget {
   static String route() => "/home";
@@ -15,14 +17,13 @@ class HomePage extends ConsumerStatefulWidget {
 }
 
 class _HomePageState extends ConsumerState<HomePage> {
-  final ClipboardService _clipboardService = ClipboardService();
-  bool _isClicked = false;
-  int _clickedIndex = -1;
+  late final ClipboardService _clipboardService;
 
   @override
   void initState() {
     super.initState();
-    _clipboardService.startMonitoring();
+    _clipboardService = ref.read(clipboardProvider);
+    _clipboardService.startClipboardMonitoring();
   }
 
   @override
@@ -36,6 +37,9 @@ class _HomePageState extends ConsumerState<HomePage> {
     final name = ref.watch(authStateProvider.select(
       (value) => value.valueOrNull?.displayName,
     ));
+    final user = ref.watch(authStateProvider).valueOrNull;
+    final userDoc =
+        FirebaseFirestore.instance.collection('users').doc(user?.uid);
 
     return Scaffold(
       appBar: AppBar(
@@ -52,47 +56,88 @@ class _HomePageState extends ConsumerState<HomePage> {
         children: [
           Text("Welcome, ${name?.split(" ")[0] ?? 'Guest'}"),
           Expanded(
-            child: StreamBuilder<List<String>>(
-              stream: _clipboardService.clipboardStream,
+            child: StreamBuilder<DocumentSnapshot>(
+              stream: userDoc.snapshots(),
               builder: (context, snapshot) {
-                if (snapshot.hasData) {
-                  final clipboardHistory = snapshot.data!;
-                  return ListView.builder(
-                    itemCount: clipboardHistory.length,
-                    itemBuilder: (context, index) {
-                      return Padding(
-                        padding: const EdgeInsets.all(8.0),
-                        child: Container(
-                          color: const Color.fromARGB(255, 181, 226, 203),
-                          child: ListTile(
-                            title: Text(clipboardHistory[index]),
-                            trailing: IconButton(
-                              onPressed: () {
-                                setState(() {
-                                  _isClicked = true;
-                                  _clickedIndex = index;
-                                });
-                                Clipboard.setData(ClipboardData(
-                                    text: clipboardHistory[index]));
-                                Future.delayed(const Duration(seconds: 1), () {
-                                  setState(() {
-                                    _isClicked = false;
-                                    _clickedIndex = -1;
-                                  });
-                                });
+                if (snapshot.connectionState == ConnectionState.waiting) {
+                  return const Center(child: CircularProgressIndicator());
+                }
+                if (!snapshot.hasData || snapshot.data == null) {
+                  return const Center(child: Text("No clipboard history"));
+                }
+
+                if (!snapshot.data!.exists) {
+                  // Initialize document for new users
+                  userDoc.set({'copied': []});
+                  return const Center(child: Text("No clipboard history"));
+                }
+
+                final userData = snapshot.data!.data() as Map<String, dynamic>?;
+                if (userData == null) {
+                  return const Center(child: Text("No clipboard history"));
+                }
+
+                final copiedList = (userData['copied'] as List<dynamic>?) ?? [];
+                final reversedList = copiedList.reversed.toList();
+
+                return ListView.builder(
+                  itemCount: reversedList.length,
+                  itemBuilder: (context, index) {
+                    var copiedItem =
+                        reversedList[index] as Map<String, dynamic>;
+                    return Padding(
+                      padding: const EdgeInsets.all(8.0),
+                      child: Container(
+                        color: const Color.fromARGB(255, 181, 226, 203),
+                        child: InkWell(
+                          onLongPress: () {
+                            showDialog(
+                              context: context,
+                              builder: (context) {
+                                return AlertDialog(
+                                  title: const Text("Delete this item?"),
+                                  actions: [
+                                    TextButton(
+                                      onPressed: () {
+                                        userDoc.update({
+                                          'copied': FieldValue.arrayRemove(
+                                              [copiedItem])
+                                        });
+                                        Navigator.of(context).pop();
+                                      },
+                                      child: const Text("Delete"),
+                                    ),
+                                    TextButton(
+                                      onPressed: () {
+                                        Navigator.of(context).pop();
+                                      },
+                                      child: const Text("Cancel"),
+                                    ),
+                                  ],
+                                );
                               },
-                              icon: _isClicked && _clickedIndex == index
-                                  ? const Icon(Icons.check)
-                                  : const Icon(Icons.copy),
+                            );
+                          },
+                          onTap: () {
+                            Clipboard.setData(
+                                ClipboardData(text: copiedItem['copy']));
+                            ScaffoldMessenger.of(context)
+                                .showSnackBar(const SnackBar(
+                              duration: Duration(seconds: 1),
+                              content: Text("Copied to Clipboard"),
+                            ));
+                          },
+                          child: ListTile(
+                            title: Text(
+                              copiedItem['copy'],
+                              maxLines: 3,
                             ),
                           ),
                         ),
-                      );
-                    },
-                  );
-                } else {
-                  return const Center(child: Text("No clipboard history"));
-                }
+                      ),
+                    );
+                  },
+                );
               },
             ),
           ),
