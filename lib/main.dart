@@ -14,7 +14,7 @@ import 'package:sentry_flutter/sentry_flutter.dart';
 
 import 'core/providers/bootstrap_provider.dart';
 import 'firebase_options.dart';
-
+  
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
   final container = ProviderContainer();

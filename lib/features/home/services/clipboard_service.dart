@@ -1,45 +1,50 @@
 import 'dart:async';
 import 'dart:developer';
 
+import 'package:clipboard_watcher/clipboard_watcher.dart'; // Import the package
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/services.dart';
 import 'package:fpdart/fpdart.dart';
 
-class ClipboardService {
+class ClipboardService with ClipboardListener {
   final List<String> _clipboardHistory = [];
   final StreamController<List<String>> _clipboardStreamController =
       StreamController<List<String>>.broadcast();
-  Timer? _timer;
   final FirebaseAuth _auth;
   final FirebaseFirestore _firestore;
+  final ClipboardWatcher _clipboardWatcher; // Add ClipboardWatcher
 
   ClipboardService(
-      {required FirebaseAuth auth, required FirebaseFirestore firestore})
+      {required FirebaseAuth auth,
+      required FirebaseFirestore firestore,
+      required ClipboardWatcher clipboardWatcher}) // Inject ClipboardWatcher
       : _auth = auth,
-        _firestore = firestore;
+        _firestore = firestore,
+        _clipboardWatcher = clipboardWatcher;
 
   List<String> get clipboardHistory => _clipboardHistory;
   Stream<List<String>> get clipboardStream => _clipboardStreamController.stream;
 
-//TODO: Refactor with Platform Channel to trigger monitoring on clipboard events, instead of using Timer
-
   Future<void> startClipboardMonitoring() async {
-    try {
-      _timer = Timer.periodic(const Duration(seconds: 1), (timer) async {
-        final clipboardData = await Clipboard.getData('text/plain');
-        if (clipboardData != null &&
-            clipboardData.text != null &&
-            !_clipboardHistory.contains(clipboardData.text)) {
-          _clipboardHistory.insert(0, clipboardData.text!);
-          if (!_clipboardStreamController.isClosed) {
-            _clipboardStreamController.add(_clipboardHistory);
-          }
-          await _uploadCopiedData(clipboardData.text!);
+    _clipboardWatcher.addListener(this);
+    _clipboardWatcher.start();
+    onClipboardChanged();
+  }
+
+  @override
+  void onClipboardChanged() async {
+    ClipboardData? newClipboardData =
+        await Clipboard.getData(Clipboard.kTextPlain);
+    if (newClipboardData != null && newClipboardData.text != null) {
+      final newText = newClipboardData.text!;
+      if (!_clipboardHistory.contains(newText)) {
+        _clipboardHistory.insert(0, newText);
+        if (!_clipboardStreamController.isClosed) {
+          _clipboardStreamController.add(_clipboardHistory);
         }
-      });
-    } catch (error) {
-      log('Error in startMonitoring: $error');
+        await _uploadCopiedData(newText);
+      }
     }
   }
 
@@ -65,7 +70,8 @@ class ClipboardService {
   }
 
   void dispose() {
-    _timer?.cancel();
+    _clipboardWatcher.removeListener(this);
+    _clipboardWatcher.stop();
     _clipboardStreamController.close();
   }
 }
