@@ -174,6 +174,14 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "0.4.1"
+  clipboard_watcher:
+    dependency: "direct main"
+    description:
+      name: clipboard_watcher
+      sha256: "6a9f11ecfe983e9a211458c37c62a9c2830e6ae0db4afc65f1e9fecdd2c204a3"
+      url: "https://pub.dev"
+    source: hosted
+    version: "0.3.0"
   clock:
     dependency: transitive
     description:
@@ -411,6 +419,14 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "4.5.0"
+  flutter_background:
+    dependency: "direct main"
+    description:
+      name: flutter_background
+      sha256: "8dad66e3102da2b4046cc3adcf70625578809827170bd78e36e5890c074287d2"
+      url: "https://pub.dev"
+    source: hosted
+    version: "1.3.0+1"
   flutter_dotenv:
     dependency: "direct main"
     description:
