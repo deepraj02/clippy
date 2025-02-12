@@ -1,6 +1,6 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-import '../../../core/providers/firebase_providers.dart';
+import '../../../core/providers/global_providers.dart';
 import '../services/user.service.dart';
 
 final userServiceProvider = Provider<UserService>((ref) {

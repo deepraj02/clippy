@@ -1,3 +1,4 @@
+import 'package:clipboard_watcher/clipboard_watcher.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -18,4 +19,8 @@ final googleSignInProvider = Provider<GoogleSignIn>((ref) {
 final authStateProvider = StreamProvider<User?>((ref) {
   final authState = ref.watch(firebaseAuthInstanceProvider).authStateChanges();
   return authState;
+});
+
+final clipboardWatcherProvider = Provider<ClipboardWatcher>((ref) {
+  return ClipboardWatcher.instance;
 });
