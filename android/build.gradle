@@ -12,7 +12,11 @@ subprojects {
 subprojects {
     project.evaluationDependsOn(':app')
 }
-
+// android {
+//       lint {
+//           baseline = file("lint-baseline.xml")
+//       }
+//   }
 tasks.register("clean", Delete) {
     delete rootProject.buildDir
 }
