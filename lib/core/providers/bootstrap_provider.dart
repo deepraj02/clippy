@@ -1,5 +1,6 @@
 import 'dart:developer';
 
+import 'package:clippy/core/providers/global_providers.dart';
 import 'package:clippy/core/providers/storage_provider.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 
@@ -19,6 +20,7 @@ class Bootstrap extends _$Bootstrap {
     try {
       await ref.read(localStorageProvider).init();
       ref.read(clipboardProvider);
+      ref.read(backgroundServiceProvider);
 
       state = false;
       log("BOOTSTRAPPED", name: "BOOTSTRAP");

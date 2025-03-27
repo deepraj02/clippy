@@ -22,12 +22,23 @@
                 "secrets.json"
             ],
             "deviceId": "macos"
+        },
+        {
+            "name": "Flutter Android",
+            "type": "dart",
+            "request": "launch",
+            "program": "lib/main.dart",
+            "args": [
+                "--dart-define-from-file",
+                "secrets.json"
+            ],
+            "deviceId": "POCO M2 Pro"
         }
     ],
     "compounds": [
         {
             "name": "All Devices",
-            "configurations": ["Flutter iOS", "Flutter macOS"]
+            "configurations": ["Flutter Android", "Flutter macOS"]
         }
     ]
 }
